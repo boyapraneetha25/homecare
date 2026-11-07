@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { addRow, deleteRow, loadRows, logout, saveRow, signInWithGoogle, updateRow, watchAuth } from './firebase.js';
+import { addRow, auth, deleteRow, firebaseEnabled, loadRows, logout, saveRow, signInWithGoogle, updateRow, watchAuth } from './firebase.js';
 import GoogleAuthPage from './GoogleAuthPage.jsx';
 import { assetUrl } from './assetUrl.js';
 
