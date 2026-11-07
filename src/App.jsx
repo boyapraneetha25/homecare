@@ -159,7 +159,7 @@ function App() {
       }
     } catch (error) {
       const message = error.code === 'permission-denied'
-        ? 'Firestore denied this booking. Publish firestore.rules in Firebase Console and try again.'
+        ? 'Realtime Database denied this booking. Publish database.rules.json in Firebase Console and try again.'
         : error.message || 'Booking could not be saved. Check your connection and try again.';
       showToast(message);
     } finally {

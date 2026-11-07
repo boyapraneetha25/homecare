@@ -7,18 +7,17 @@ import {
   signOut,
 } from 'firebase/auth';
 import {
-  addDoc,
-  collection,
-  deleteDoc,
-  doc,
-  getDocs,
-  getDoc,
-  getFirestore,
+  equalTo,
+  get,
+  getDatabase,
+  orderByChild,
+  push,
+  ref,
+  remove,
+  set,
+  update,
   query,
-  setDoc,
-  updateDoc,
-  where,
-} from 'firebase/firestore';
+} from 'firebase/database';
 
 const config = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -33,7 +32,7 @@ const config = {
 export const firebaseEnabled = Boolean(config.apiKey && config.projectId && config.appId);
 const app = firebaseEnabled ? initializeApp(config) : null;
 export const auth = app ? getAuth(app) : null;
-const database = app ? getFirestore(app) : null;
+const database = app && config.databaseURL ? getDatabase(app) : null;
 const LOCAL_PREFIX = 'homecare:';
 const ADMIN_EMAILS = (import.meta.env.VITE_ADMIN_EMAILS || '').split(',').map((email) => email.trim().toLowerCase());
 
@@ -55,19 +54,22 @@ export async function loadRows(name, fallback = [], currentUser = null) {
     const rows = readLocal(name, fallback);
     return name === 'users' ? rows.map(({ passwordHash, ...user }) => user) : rows;
   }
-  let source = collection(database, name);
+  let source = ref(database, name);
   if (name === 'bookings') {
     if (!currentUser) return [];
-    if (currentUser.role !== 'admin') source = query(source, where('userId', '==', currentUser.uid));
+    if (currentUser.role !== 'admin') {
+      source = query(source, orderByChild('userId'), equalTo(currentUser.uid));
+    }
   }
-  const snapshot = await getDocs(source);
-  return snapshot.docs.map((item) => ({ id: item.id, ...item.data() }));
+  const snapshot = await get(source);
+  const rows = snapshot.val();
+  return rows ? Object.entries(rows).map(([id, row]) => ({ id, ...row })) : [];
 }
 
 export async function saveRow(name, row) {
   const id = row.id || crypto.randomUUID();
   const record = { ...row, id };
-  if (database) await setDoc(doc(database, name, id), record);
+  if (database) await set(ref(database, `${name}/${id}`), record);
   else {
     const rows = readLocal(name);
     writeLocal(name, [...rows.filter((item) => item.id !== id), record]);
@@ -77,8 +79,9 @@ export async function saveRow(name, row) {
 
 export async function addRow(name, row) {
   if (database) {
-    const reference = await addDoc(collection(database, name), row);
-    return { ...row, id: reference.id };
+    const reference = push(ref(database, name));
+    await set(reference, row);
+    return { ...row, id: reference.key };
   }
   const record = { ...row, id: crypto.randomUUID() };
   writeLocal(name, [...readLocal(name), record]);
@@ -86,12 +89,12 @@ export async function addRow(name, row) {
 }
 
 export async function updateRow(name, id, updates) {
-  if (database) await updateDoc(doc(database, name, id), updates);
+  if (database) await update(ref(database, `${name}/${id}`), updates);
   else writeLocal(name, readLocal(name).map((item) => item.id === id ? { ...item, ...updates } : item));
 }
 
 export async function deleteRow(name, id) {
-  if (database) await deleteDoc(doc(database, name, id));
+  if (database) await remove(ref(database, `${name}/${id}`));
   else writeLocal(name, readLocal(name).filter((item) => item.id !== id));
 }
 
@@ -109,11 +112,13 @@ export async function signInWithGoogle() {
     createdAt: new Date().toISOString(),
   };
   try {
-    const snapshot = await getDoc(doc(database, 'users', user.uid));
-    if (snapshot.exists()) profile = snapshot.data();
-    else await saveRow('users', profile);
+    if (database) {
+      const snapshot = await get(ref(database, `users/${user.uid}`));
+      if (snapshot.exists()) profile = snapshot.val();
+      else await saveRow('users', profile);
+    }
   } catch {
-    // Firestore profile setup must not undo a successful Google sign-in.
+    // Database profile setup must not undo a successful Google sign-in.
   }
   return {
     uid: user.uid,
@@ -133,8 +138,10 @@ export function watchAuth(callback) {
     if (!user) return callback(null);
     let profile = {};
     try {
-      const snapshot = await getDoc(doc(database, 'users', user.uid));
-      if (snapshot.exists()) profile = snapshot.data();
+      if (database) {
+        const snapshot = await get(ref(database, `users/${user.uid}`));
+        if (snapshot.exists()) profile = snapshot.val();
+      }
     } catch { /* The signed-in experience can continue without an optional profile read. */ }
     callback({
       uid: user.uid,
