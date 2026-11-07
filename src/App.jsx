@@ -149,12 +149,19 @@ function App() {
         notes: values.notes, status: 'Requested', paymentStatus: 'Pending',
         createdAt: new Date().toISOString(),
       });
-      await addRow('payments', { bookingId: booking.id, userId: user.uid, amount: service.price, status: 'Pending', method: 'Pay after service', createdAt: new Date().toISOString() });
       setBookings((current) => [booking, ...current]);
-      showToast('Your booking request is on its way.');
       go('mybookings');
+      showToast('Your booking request is on its way.');
+      try {
+        await addRow('payments', { bookingId: booking.id, userId: user.uid, amount: service.price, status: 'Pending', method: 'Pay after service', createdAt: new Date().toISOString() });
+      } catch {
+        showToast('Your booking is saved, but its payment record could not be created.');
+      }
     } catch (error) {
-      showToast(error.message || 'Booking could not be saved. Check your connection and try again.');
+      const message = error.code === 'permission-denied'
+        ? 'Firestore denied this booking. Publish firestore.rules in Firebase Console and try again.'
+        : error.message || 'Booking could not be saved. Check your connection and try again.';
+      showToast(message);
     } finally {
       setBusy(false);
     }
