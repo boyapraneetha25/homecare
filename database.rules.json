@@ -1,0 +1,44 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "users": {
+      ".read": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || (auth.token.email === 'praneethaboya2005@gmail.com' && auth.token.email_verified === true))",
+      "$uid": {
+        ".read": "auth != null && (auth.uid === $uid || root.child('users').child(auth.uid).child('role').val() === 'admin' || (auth.token.email === 'praneethaboya2005@gmail.com' && auth.token.email_verified === true))",
+        ".write": "auth != null && (auth.uid === $uid || root.child('users').child(auth.uid).child('role').val() === 'admin' || (auth.token.email === 'praneethaboya2005@gmail.com' && auth.token.email_verified === true))",
+        ".validate": "newData.hasChildren(['name', 'email', 'role']) && newData.child('name').isString() && newData.child('email').isString() && (newData.child('role').val() === 'customer' || (auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || (auth.token.email === 'praneethaboya2005@gmail.com' && auth.token.email_verified === true))))"
+      }
+    },
+    "services": {
+      ".read": true,
+      ".write": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || (auth.token.email === 'praneethaboya2005@gmail.com' && auth.token.email_verified === true))"
+    },
+    "providers": {
+      ".read": true,
+      ".write": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || (auth.token.email === 'praneethaboya2005@gmail.com' && auth.token.email_verified === true))"
+    },
+    "bookings": {
+      ".read": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || (auth.token.email === 'praneethaboya2005@gmail.com' && auth.token.email_verified === true) || (query.orderByChild === 'userId' && query.equalTo === auth.uid))",
+      ".indexOn": ["userId", "status"],
+      "$bookingId": {
+        ".read": "auth != null && (data.child('userId').val() === auth.uid || root.child('users').child(auth.uid).child('role').val() === 'admin' || (auth.token.email === 'praneethaboya2005@gmail.com' && auth.token.email_verified === true))",
+        ".write": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || (auth.token.email === 'praneethaboya2005@gmail.com' && auth.token.email_verified === true) || (!data.exists() && newData.child('userId').val() === auth.uid) || (data.exists() && data.child('userId').val() === auth.uid && newData.child('userId').val() === data.child('userId').val() && newData.child('status').val() === 'Cancelled' && newData.child('serviceId').val() === data.child('serviceId').val() && newData.child('serviceName').val() === data.child('serviceName').val() && newData.child('price').val() === data.child('price').val() && newData.child('date').val() === data.child('date').val() && newData.child('time').val() === data.child('time').val() && newData.child('address').val() === data.child('address').val() && newData.child('notes').val() === data.child('notes').val() && newData.child('customerName').val() === data.child('customerName').val() && newData.child('customerEmail').val() === data.child('customerEmail').val() && newData.child('paymentStatus').val() === data.child('paymentStatus').val() && newData.child('createdAt').val() === data.child('createdAt').val()))"
+      }
+    },
+    "reviews": {
+      ".read": true,
+      "$reviewId": {
+        ".write": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || (auth.token.email === 'praneethaboya2005@gmail.com' && auth.token.email_verified === true) || (!data.exists() && newData.child('userId').val() === auth.uid) || (data.exists() && data.child('userId').val() === auth.uid))"
+      }
+    },
+    "payments": {
+      ".read": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || (auth.token.email === 'praneethaboya2005@gmail.com' && auth.token.email_verified === true) || (query.orderByChild === 'userId' && query.equalTo === auth.uid))",
+      ".indexOn": ["userId", "bookingId"],
+      "$paymentId": {
+        ".read": "auth != null && (data.child('userId').val() === auth.uid || root.child('users').child(auth.uid).child('role').val() === 'admin' || (auth.token.email === 'praneethaboya2005@gmail.com' && auth.token.email_verified === true))",
+        ".write": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'admin' || (auth.token.email === 'praneethaboya2005@gmail.com' && auth.token.email_verified === true) || (!data.exists() && newData.child('userId').val() === auth.uid && newData.child('status').val() === 'Pending' && root.child('bookings').child(newData.child('bookingId').val()).child('userId').val() === auth.uid && newData.child('amount').val() === root.child('bookings').child(newData.child('bookingId').val()).child('price').val()))"
+      }
+    }
+  }
+}

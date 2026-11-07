@@ -1,0 +1,343 @@
+:root {
+  --ink: #172a35;
+  --muted: #6d7f86;
+  --paper: #f4f8fa;
+  --white: #ffffff;
+  --green: #116875;
+  --green-dark: #0a4b58;
+  --lime: #f5cf68;
+  --coral: #f27b63;
+  --line: #dce6e9;
+  color: var(--ink);
+  background: var(--paper);
+}
+
+body {
+  color: var(--ink);
+  background: var(--paper);
+}
+
+.site-header {
+  background: #f7fafb;
+  border-bottom-color: #dce6e9;
+}
+
+.brand-mark {
+  background: var(--coral);
+  color: #172a35;
+  border-radius: 12px 12px 12px 3px;
+}
+
+.nav-link.active::after {
+  height: 3px;
+  background: var(--coral);
+}
+
+.header-book {
+  background: var(--green-dark);
+}
+
+.header-book:hover,
+.button-primary:hover {
+  background: #083d49;
+}
+
+.button-primary {
+  color: #172a35;
+  background: var(--coral);
+}
+
+.hero-section {
+  background: linear-gradient(115deg, #e6f2f4 0%, #f4f8fa 56%, #fff4d8 100%);
+}
+
+.hero-copy h1 em,
+.page-intro h1 em,
+.booking-page > h1 em,
+.detail-main h1 em,
+.about-hero h1 em,
+.contact-heading h1 em,
+.reviews-hero h1 em {
+  color: var(--green);
+}
+
+.hero-visual > img {
+  box-shadow: 14px 14px 0 #f5cf68;
+}
+
+.hero-note {
+  border-left: 3px solid var(--coral);
+  box-shadow: 0 15px 40px #19394320;
+}
+
+.note-icon,
+.service-icon,
+.mini-service-icon {
+  background: #e2f0f1;
+  color: var(--green-dark);
+}
+
+.live-dot {
+  background: var(--coral);
+  box-shadow: 0 0 0 4px #f8ded7;
+}
+
+.trust-strip {
+  background: #ffffff;
+  border-color: var(--line);
+}
+
+.trust-strip i,
+.feature-copy li i,
+.contact-methods small,
+.detail-photo-label i {
+  color: var(--green);
+}
+
+.section-heading h2,
+.feature-copy h2,
+.review-form h2 {
+  color: #172a35;
+}
+
+.service-card {
+  border: 1px solid #dfe8eb;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 5px 16px #173a4510;
+}
+
+.service-card:hover {
+  box-shadow: 0 15px 34px #173a4522;
+}
+
+.service-image {
+  background: #dcebee;
+}
+
+.service-icon {
+  border: 2px solid #ffffff;
+}
+
+.service-arrow {
+  border-color: #d6e5e8;
+  color: var(--green);
+}
+
+.service-book-quick {
+  background: #f0f7f7;
+}
+
+.home-feature {
+  background: #fff3d8;
+}
+
+.image-caption {
+  border-left: 3px solid var(--coral);
+}
+
+.pro-card,
+.review-card,
+.booking-summary,
+.booking-recap,
+.contact-form,
+.contact-methods > a,
+.contact-methods > button {
+  border-radius: 7px;
+  border-color: #dce6e9;
+  box-shadow: 0 6px 18px #1839450b;
+}
+
+.pro-card:hover,
+.contact-methods > a:hover,
+.contact-methods > button:hover {
+  box-shadow: 0 12px 28px #18394516;
+}
+
+.home-cta {
+  background: #123b47;
+}
+
+.home-cta .eyebrow {
+  color: #b6dadd;
+}
+
+.button-light {
+  background: var(--lime);
+  color: #172a35;
+}
+
+.site-footer {
+  background: #e7f0f2;
+}
+
+.footer-brand .brand-mark {
+  background: var(--green-dark);
+  color: #e7f0f2;
+}
+
+.footer-spark,
+.brand-period {
+  color: var(--coral);
+}
+
+.custom-control:focus {
+  border-color: var(--green);
+  box-shadow: 0 0 0 3px #11687520;
+}
+
+.status-requested {
+  background: #fff1d1;
+  color: #8d5a12;
+}
+
+.status-confirmed,
+.status-completed {
+  background: #e0f0e9;
+  color: #236449;
+}
+
+.status-in-progress {
+  background: #e1eef3;
+  color: #256073;
+}
+
+.admin-layout {
+  background: #edf3f5;
+}
+
+.admin-sidebar {
+  color: #eef7f7;
+  background: #123b47;
+  border-right: 0;
+  box-shadow: 8px 0 22px #102f3810;
+}
+
+.admin-side-title {
+  color: #ffffff;
+}
+
+.admin-side-title .brand-mark {
+  background: var(--coral);
+  color: #172a35;
+}
+
+.admin-side-title small,
+.admin-label,
+.admin-side-bottom small {
+  color: #a9c8cc;
+}
+
+.admin-nav-item {
+  color: #c1d7d9;
+  border-radius: 5px;
+}
+
+.admin-nav-item:hover {
+  color: #ffffff;
+  background: #ffffff14;
+}
+
+.admin-nav-item.active {
+  color: #172a35;
+  background: var(--lime);
+}
+
+.admin-nav-item > span {
+  color: #172a35;
+  background: #ffffffb8;
+}
+
+.admin-side-bottom {
+  border-top-color: #ffffff2b;
+}
+
+.admin-side-bottom button {
+  color: #e2eff0;
+}
+
+.admin-profile,
+.customer-avatar {
+  color: #172a35;
+  background: var(--lime);
+}
+
+.admin-panel,
+.admin-stat-grid article {
+  border-radius: 7px;
+  border-color: #dce6e9;
+  box-shadow: 0 7px 22px #1839450b;
+}
+
+.admin-note {
+  color: #ffffff;
+  background: #dbedef;
+  border-radius: 7px;
+  color: #172a35;
+}
+
+.admin-note > i {
+  color: var(--coral);
+}
+
+.admin-note p {
+  color: #506b73;
+}
+
+.admin-panel-heading .text-action,
+.text-action {
+  color: var(--green);
+}
+
+.admin-service-row,
+.admin-customer-row {
+  border-color: #e6edef;
+}
+
+.admin-layout .button-primary {
+  background: var(--coral);
+}
+
+.toast-message {
+  background: #123b47;
+  border-left: 3px solid var(--lime);
+}
+
+@keyframes homecare-enter {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hero-copy,
+.hero-visual {
+  animation: homecare-enter 600ms ease-out both;
+}
+
+.hero-visual {
+  animation-delay: 90ms;
+}
+
+@media (max-width: 600px) {
+  .hero-visual > img {
+    box-shadow: 8px 8px 0 var(--lime);
+  }
+
+  .admin-sidebar {
+    box-shadow: 0 6px 18px #102f3814;
+  }
+
+  .admin-nav-item.active {
+    background: var(--lime);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
