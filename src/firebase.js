@@ -101,17 +101,19 @@ export async function signInWithGoogle() {
   provider.setCustomParameters({ prompt: 'select_account' });
   const result = await signInWithPopup(auth, provider);
   const { user } = result;
-  const snapshot = await getDoc(doc(database, 'users', user.uid));
-  let profile = snapshot.exists() ? snapshot.data() : null;
-  if (!profile) {
-    profile = {
-      id: user.uid,
-      name: user.displayName || 'HomeCare customer',
-      email: user.email || '',
-      role: 'customer',
-      createdAt: new Date().toISOString(),
-    };
-    await saveRow('users', profile);
+  let profile = {
+    id: user.uid,
+    name: user.displayName || 'HomeCare customer',
+    email: user.email || '',
+    role: 'customer',
+    createdAt: new Date().toISOString(),
+  };
+  try {
+    const snapshot = await getDoc(doc(database, 'users', user.uid));
+    if (snapshot.exists()) profile = snapshot.data();
+    else await saveRow('users', profile);
+  } catch {
+    // Firestore profile setup must not undo a successful Google sign-in.
   }
   return {
     uid: user.uid,
