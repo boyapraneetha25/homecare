@@ -17,7 +17,7 @@ The Vite server prints the local URL after it starts.
 
 The `main` branch is built and deployed automatically by `.github/workflows/deploy.yml`. In the repository's **Settings → Pages**, set the build and deployment source to **GitHub Actions**. The site will be available at `https://boyapraneetha25.github.io/homecare/` after the workflow completes.
 
-To enable Firebase in the deployed app, add the `VITE_FIREBASE_*` values and `VITE_ADMIN_EMAILS` as repository Actions variables under **Settings → Secrets and variables → Actions → Variables**. These values are included in the public frontend build; Firebase security must be enforced by Firestore rules. Add `boyapraneetha25.github.io` to Firebase Authentication's authorized domains for Google sign-in.
+The Firebase web configuration is included as a workflow default; repository Actions variables under **Settings → Secrets and variables → Actions → Variables** can override it for another environment. Firebase web config is public in a browser app, so enforce access with Firestore rules. Add `boyapraneetha25.github.io` to Firebase Authentication's authorized domains for Google sign-in.
 
 ## Firebase setup
 
